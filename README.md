@@ -8,7 +8,7 @@ Introducing Clap (As A Service).
 
 With this simple tool, now YOU can be one of millions clapping their way to a better life.
 
-# [Demo](http://alexlockhart.ca/clap-as-a-service/)
+# [Demo](http://salockhart.github.io/clap-as-a-service/)
 
 Select one of our meticulously curated Emoji, or get a little crazy and input your own
 
