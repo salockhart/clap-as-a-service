@@ -23,7 +23,7 @@ app.get('/clap', function (req, res, next) {
   if (!phrase) {
     res.status(400).send('Bad Request phrase URL query required');
   }
-  const tokens = phrase.split(' ');
+  const tokens = phrase.trim().split(' ');
   const clapped = [];
   tokens.forEach(token => {
     clapped.push(token);

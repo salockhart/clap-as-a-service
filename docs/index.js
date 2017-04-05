@@ -3,7 +3,7 @@
 $(function () {
     const phraseInput = $('#phrase');
 
-    phraseInput.keyup(function (event) {
+    phraseInput.change(function (event) {
         const value = phraseInput.val();
         if (value.length === 0) {
             return;
