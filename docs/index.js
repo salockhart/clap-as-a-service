@@ -25,7 +25,7 @@ $(function () {
     const urlPhrase = $.urlParam('phrase');
 
     if (urlPhrase) {
-        phraseInput.val(urlPhrase);
+        phraseInput.val(decodeURIComponent(urlPhrase));
         phraseInput.keyup();
     }
 });
