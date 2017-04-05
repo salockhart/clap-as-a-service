@@ -1,9 +1,22 @@
 'use strict';
 
 $(function () {
+    let typingTimer;
+    const doneTypingInterval = 500;
+
     const phraseInput = $('#phrase');
 
-    phraseInput.change(function (event) {
+    phraseInput.keyup(function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    phraseInput.keydown(function () {
+        clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTyping() {
         const value = phraseInput.val();
         if (value.length === 0) {
             return;
@@ -15,7 +28,7 @@ $(function () {
             .done(function (event) {
                 $('#clap').html(event);
             });
-    });
+    }
 
     $.urlParam = function (name) {
         const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
