@@ -8,7 +8,15 @@ const app = express();
 const port = (process.env.PORT || 3000);
 app.set('port', port);
 
-app.get('/', function(req, res, next) {
+app.all('/', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
+app.use(express.static(path.join(__dirname, '/docs')));
+
+app.get('/clap', function (req, res, next) {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji || '👏';
   if (!phrase) {
@@ -24,6 +32,6 @@ app.get('/', function(req, res, next) {
   res.send(clapped.join(' '));
 });
 
-app.listen(port, function() {
+app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
