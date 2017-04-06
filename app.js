@@ -21,7 +21,8 @@ app.use(function (req, res, next) {
 
 app.use(express.static(path.join(__dirname, '/docs')));
 
-function clapPhrase(phrase) {
+function clapPhrase(phrase, emoji) {
+  emoji = emoji || '👏';
   const tokens = phrase.trim().split(' ');
   const clapped = [];
   tokens.forEach(token => {
@@ -34,17 +35,19 @@ function clapPhrase(phrase) {
 
 app.get('/clap', function (req, res) {
   const phrase = req.query.phrase;
-  const emoji = req.query.emoji || '👏';
+  const emoji = req.query.emoji;
   if (!phrase) {
     res.status(400).send('Bad Request phrase URL query required');
   }
-  res.send(clapPhrase(phrase));
+  res.send(clapPhrase(phrase, emoji));
 });
 
 app.post('/slack', function (req, res) {
   if (req.body.token !== process.env.SLACK_VERIFY_TOKEN) {
     return res.sendStatus(400);
   }
+
+  const phrase = req.body.text;
 
   res.send(clapPhrase(phrase));
 });
