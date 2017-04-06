@@ -47,11 +47,20 @@ app.post('/slack', function (req, res) {
     return res.sendStatus(400);
   }
 
-  const phrase = req.body.text;
+  let phrase = req.body.text;
+  let emoji;
+  
+  const regex = /^(.*?)\[(.*?)\]$/g;
+  const match = regex.exec(phrase);
+
+  if (match) {
+    phrase = match[1];
+    emoji = match[2];
+  }
 
   res.send({
     response_type: "in_channel",
-    text: clapPhrase(phrase)
+    text: clapPhrase(phrase, emoji)
   });
 });
 
