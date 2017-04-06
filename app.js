@@ -49,7 +49,10 @@ app.post('/slack', function (req, res) {
 
   const phrase = req.body.text;
 
-  res.send(clapPhrase(phrase));
+  res.send({
+    response_type: "in_channel",
+    text: clapPhrase(phrase)
+  });
 });
 
 app.listen(port, function () {
