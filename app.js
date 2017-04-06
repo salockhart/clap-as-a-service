@@ -8,6 +8,9 @@ const app = express();
 const port = (process.env.PORT || 3000);
 app.set('port', port);
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -17,7 +20,7 @@ app.use(function (req, res, next) {
 
 app.use(express.static(path.join(__dirname, '/docs')));
 
-app.get('/clap', function (req, res, next) {
+app.get('/clap', function (req, res) {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji || '👏';
   if (!phrase) {
@@ -31,6 +34,10 @@ app.get('/clap', function (req, res, next) {
   });
   clapped.pop();
   res.send(clapped.join(' '));
+});
+
+app.post('/slack', function (req, res) {
+  console.log(req.body);
 });
 
 app.listen(port, function () {
