@@ -45,12 +45,11 @@ function submitPhrase() {
     const value = $('#phrase').val();
     let emoji = $('#custom-emoji').val();
 
-    if (value.length === 0) {
+    if (!value) {
         return;
     }
 
-    if (emoji.length === 0) {
-        console.log('No Custom Emoji');
+    if (!emoji) {
         emoji = selectedEmoji;
     }
 
@@ -60,6 +59,11 @@ function submitPhrase() {
     $.get('https://clap-as-a-service.herokuapp.com/clap?phrase=' + encodedPhrase + '&emoji=' + encodedEmoji)
         .done(function (event) {
             $('#clap').html(event);
+            if (!event) {
+                $('#share-container').addClass('invisible');
+            } else {
+                $('#share-container').removeClass('invisible');
+            }
         });
 }
 
@@ -114,7 +118,7 @@ function onEmojiSelect(event) {
     if (target.text() === '+') {
         onOpenCustomEmoji();
     } else {
-        selectedEmoji = target.text();        
+        selectedEmoji = target.text();
         submitPhrase();
         const currentActive = $('.active');
         currentActive.removeClass('active');
@@ -137,6 +141,44 @@ function onCloseCustomEmoji() {
     emojiInput.val('');
 }
 
+function getURLForResult() {
+    const value = $('#phrase').val();
+    let emoji = $('#custom-emoji').val();
+
+    if (!value) {
+        return;
+    }
+
+    if (!emoji) {
+        emoji = selectedEmoji;
+    }
+
+    return window.location.origin + window.location.pathname + '?phrase=' + encodeURIComponent(value) + '&emoji=' + encodeURIComponent(emoji);
+}
+
+function onShareTwitter() {
+    const baseURL = 'https://twitter.com/intent/tweet/';
+    const clapResult = $('#clap').text();
+    window.open(baseURL + "?text=" + encodeURIComponent(clapResult) + "&url=" + encodeURIComponent(getURLForResult()));
+}
+
+function onShareCopy() {
+    const value = $('#clap');
+    value.setSelectionRange(0, value.text().length);
+
+    // copy the selection
+    let succeed;
+    try {
+        succeed = document.execCommand("copy");
+    } catch (e) {
+        succeed = false;
+    }
+
+    if (succeed) {
+        console.log("Success");
+    }
+}
+
 $(function () {
     fillEmojiSelector();
     handleUrlParams();
@@ -150,4 +192,7 @@ $(function () {
     emojiInput.keydown(onKeyDown);
 
     $('#custom-emoji-close').click(onCloseCustomEmoji);
+
+    $('#share-container .twitter-button').click(onShareTwitter);
+    $('#share-container .copy-button').click(onShareCopy);
 });
