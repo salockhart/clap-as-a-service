@@ -13,20 +13,20 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
 app.use(express.static(path.join(__dirname, '/docs')));
 
-function clapPhrase(phrase, emoji) {
-  emoji = emoji || '👏';
+function clapPhrase(phrase, inputEmoji) {
+  const emoji = inputEmoji || '👏';
   const tokens = phrase.trim().split(' ');
   const clapped = [];
-  tokens.forEach(token => {
+  tokens.forEach((token) => {
     clapped.push(token);
     clapped.push(emoji);
   });
@@ -34,16 +34,16 @@ function clapPhrase(phrase, emoji) {
   return clapped.join(' ');
 }
 
-app.get('/clap', function (req, res) {
+app.get('/clap', (req, res) => {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji;
   if (!phrase) {
-    res.status(400).send('Bad Request phrase URL query required');
+    return res.status(400).send('Bad Request phrase URL query required');
   }
-  res.send(clapPhrase(phrase, emoji));
+  return res.send(clapPhrase(phrase, emoji));
 });
 
-app.post('/slack', function (req, res) {
+app.post('/slack', (req, res) => {
   if (req.body.token !== process.env.SLACK_VERIFY_TOKEN) {
     return res.sendStatus(400);
   }
@@ -59,33 +59,30 @@ app.post('/slack', function (req, res) {
     emoji = match[2];
   }
 
-  res.send({
-    response_type: "in_channel",
-    text: clapPhrase(phrase, emoji)
+  return res.send({
+    response_type: 'in_channel',
+    text: clapPhrase(phrase, emoji),
   });
 });
 
-app.get('/slack/redirect', function (req, res) {
+app.get('/slack/redirect', (req, res) => {
   const options = {
-    uri: 'https://slack.com/api/oauth.access?code=' +
-      req.query.code +
-      '&client_id=' + process.env.CLIENT_ID +
-      '&client_secret=' + process.env.CLIENT_SECRET,
-    method: 'GET'
-  }
+    uri: `https://slack.com/api/oauth.access?code=${req.query.code}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`,
+    method: 'GET',
+  };
 
   request(options, (error, response, body) => {
-    var JSONresponse = JSON.parse(body)
+    const JSONresponse = JSON.parse(body);
     if (!JSONresponse.ok) {
-      console.log(JSONresponse)
-      res.send("Error encountered: \n" + JSON.stringify(JSONresponse)).status(200).end()
+      console.log(JSONresponse);
+      res.send(`Error encountered: \n ${JSON.stringify(JSONresponse)}`).status(200).end();
     } else {
-      console.log(JSONresponse)
-      res.send("Success!")
+      console.log(JSONresponse);
+      res.send('Success!');
     }
-  })
+  });
 });
 
-app.listen(port, function () {
+app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
