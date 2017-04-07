@@ -1,8 +1,7 @@
-'use strict';
-
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const request = require('request');
 
 const app = express();
 
@@ -10,7 +9,9 @@ const port = (process.env.PORT || 3000);
 app.set('port', port);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -49,7 +50,7 @@ app.post('/slack', function (req, res) {
 
   let phrase = req.body.text;
   let emoji;
-  
+
   const regex = /^(.*?)\[(.*?)\]$/g;
   const match = regex.exec(phrase);
 
@@ -62,6 +63,27 @@ app.post('/slack', function (req, res) {
     response_type: "in_channel",
     text: clapPhrase(phrase, emoji)
   });
+});
+
+app.get('/slack/redirect', function (req, res) {
+  const options = {
+    uri: 'https://slack.com/api/oauth.access?code=' +
+      req.query.code +
+      '&client_id=' + process.env.CLIENT_ID +
+      '&client_secret=' + process.env.CLIENT_SECRET,
+    method: 'GET'
+  }
+
+  request(options, (error, response, body) => {
+    var JSONresponse = JSON.parse(body)
+    if (!JSONresponse.ok) {
+      console.log(JSONresponse)
+      res.send("Error encountered: \n" + JSON.stringify(JSONresponse)).status(200).end()
+    } else {
+      console.log(JSONresponse)
+      res.send("Success!")
+    }
+  })
 });
 
 app.listen(port, function () {
