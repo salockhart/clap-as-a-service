@@ -51,6 +51,16 @@ app.post('/slack', (req, res) => {
   let phrase = req.body.text;
   let emoji;
 
+  if (!phrase || phrase === 'help') {
+    return res.send({
+      response_type: 'ephemeral',
+      text: 'How to use /clap',
+      attachments: [{
+        text: "To add some claps to your life, use `/clap 'phrase'`\nIf you want to clap without a clap, change it up with `/clap 'phrase' [emoji]`\nThose brackets are required!",
+      }],
+    });
+  }
+
   const regex = /^(.*?)\[(.*?)\]$/g;
   const match = regex.exec(phrase);
 
