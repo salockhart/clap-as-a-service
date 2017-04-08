@@ -39,6 +39,10 @@ A string
 
 # Slack
 
+Add Clap (As A Service) to Slack to add a single command that will clap any input you give it.
+
+Supports regular ol' claps as well as specifying your own emoji.
+
 <a href="https://slack.com/oauth/authorize?&client_id=11167364134.165634777125&scope=commands"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
 ## Examples
