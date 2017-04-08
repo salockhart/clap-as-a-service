@@ -61,7 +61,7 @@ app.post('/slack', (req, res) => {
     });
   }
 
-  const regex = /^(.*?)(:.*?:)$/g;
+  const regex = /^(.*?)(:\S*?:)$/g;
   const match = regex.exec(phrase);
 
   if (match) {
