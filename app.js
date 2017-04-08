@@ -85,10 +85,10 @@ app.get('/slack/redirect', (req, res) => {
     const JSONresponse = JSON.parse(body);
     if (!JSONresponse.ok) {
       console.log(JSONresponse);
-      res.redirect('/slack/install/?success');
+      res.redirect('/slack/install/?error');
     } else {
       console.log(JSONresponse);
-      res.redirect('/slack/install/?error');
+      res.redirect('/slack/install/?success');
     }
   });
 });
