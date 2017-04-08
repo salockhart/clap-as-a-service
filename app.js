@@ -56,12 +56,12 @@ app.post('/slack', (req, res) => {
       response_type: 'ephemeral',
       text: 'How to use /clap',
       attachments: [{
-        text: "To add some claps to your life, use `/clap 'phrase'`\nIf you want to clap without a clap, change it up with `/clap 'phrase' [emoji]`\nThose brackets are required!",
+        text: "To add some claps to your life, use `/clap phrase`\nIf you want to clap without a clap, change it up with `/clap phrase emoji`\nWhichever emoji you put at the end, that's what you'll clap with!",
       }],
     });
   }
 
-  const regex = /^(.*?)\[(.*?)\]$/g;
+  const regex = /^(.*?)(:.*?:)$/g;
   const match = regex.exec(phrase);
 
   if (match) {
