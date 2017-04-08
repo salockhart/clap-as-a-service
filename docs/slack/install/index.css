@@ -37,4 +37,8 @@
     #gif-wrapper {
         width: 688px;
     }
+
+    #examples {
+        margin: 0 50px;
+    }
 }
