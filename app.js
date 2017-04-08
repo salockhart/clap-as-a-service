@@ -84,11 +84,9 @@ app.get('/slack/redirect', (req, res) => {
   request(options, (error, response, body) => {
     const JSONresponse = JSON.parse(body);
     if (!JSONresponse.ok) {
-      console.log(JSONresponse);
-      res.redirect('/slack/install/?error');
+      res.redirect('http://alexlockhart.ca/clap-as-a-service/slack/install/?error');
     } else {
-      console.log(JSONresponse);
-      res.redirect('/slack/install/?success');
+      res.redirect('http://alexlockhart.ca/clap-as-a-service/slack/install/?success');
     }
   });
 });
