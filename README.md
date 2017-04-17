@@ -21,8 +21,11 @@ Takes in a phrase and an optional emoji, and returns the phrase with the emoji p
 
 ### Parameters
 * phrase _(required)_
+
 The URL encoded phrase to apply the emoji to
+
 * emoji
+
 Set an emoji other than the default 👏
 
 ### Return Format
