@@ -44,7 +44,7 @@ function track(phrase, emoji, slackTeam, slackChannel, slackUser) {
       emoji,
       slackTeam,
       slackChannel,
-      slackUser
+      slackUser,
     },
   };
 
