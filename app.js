@@ -38,7 +38,6 @@ function track(phrase, emoji, slackTeamID, slackUserID) {
   const options = {
     method: 'POST',
     uri: 'https://app-analytic.herokuapp.com/track/clap-as-a-service',
-    json: true,
     body: JSON.stringify({
       phrase,
       emoji,
@@ -47,7 +46,6 @@ function track(phrase, emoji, slackTeamID, slackUserID) {
     }),
   };
 
-  console.log('Tracking: ' + JSON.stringify(options));
   request(options, () => {});
 }
 
@@ -55,6 +53,7 @@ app.get('/clap', (req, res) => {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji;
   if (!phrase) {
+    track();
     return res.status(400).send('Bad Request phrase URL query required');
   }
   track(phrase, emoji);
