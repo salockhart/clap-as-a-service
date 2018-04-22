@@ -47,6 +47,7 @@ function track(phrase, emoji, slackTeamID, slackUserID) {
     }),
   };
 
+  console.log('Tracking: ' + JSON.stringify(options));
   request(options, () => {});
 }
 
