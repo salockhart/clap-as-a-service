@@ -34,12 +34,29 @@ function clapPhrase(phrase, inputEmoji) {
   return clapped.join(' ');
 }
 
+function track(phrase, emoji, slackTeamID, slackUserID) {
+  const options = {
+    method: 'POST',
+    uri: 'https://app-analytic.herokuapp.com/track/clap-as-a-service',
+    json: true,
+    body: JSON.stringify({
+      phrase,
+      emoji,
+      slackTeamID,
+      slackUserID
+    }),
+  };
+
+  request(options, () => {});
+}
+
 app.get('/clap', (req, res) => {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji;
   if (!phrase) {
     return res.status(400).send('Bad Request phrase URL query required');
   }
+  track(phrase, emoji);
   return res.send(clapPhrase(phrase, emoji));
 });
 
@@ -52,6 +69,7 @@ app.post('/slack', (req, res) => {
   let emoji;
 
   if (!phrase || phrase === 'help') {
+    track();
     return res.send({
       response_type: 'ephemeral',
       text: 'How to use /clap',
@@ -68,6 +86,8 @@ app.post('/slack', (req, res) => {
     phrase = match[1];
     emoji = match[2];
   }
+
+  track(phrase, emoji, req.query, req.body);
 
   return res.send({
     response_type: 'in_channel',
