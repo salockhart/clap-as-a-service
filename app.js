@@ -38,12 +38,13 @@ function track(phrase, emoji, slackTeamID, slackUserID) {
   const options = {
     method: 'POST',
     uri: 'https://app-analytic.herokuapp.com/track/clap-as-a-service',
-    body: JSON.stringify({
+    json: true,
+    body: {
       phrase,
       emoji,
       slackTeamID,
       slackUserID
-    }),
+    },
   };
 
   request(options, () => {});
