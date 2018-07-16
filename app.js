@@ -37,14 +37,15 @@ function clapPhrase(phrase, inputEmoji) {
 function track(platform, userID) {
   const options = {
     method: 'GET',
-    uri: 'https://matomo-analytics.herokuapp.com',
+    uri: 'https://matomo-analytics.herokuapp.com/piwik.php',
     qs: {
       idsite: 3,
       rec: 1,
-      url: `https://alexlockhart.ca/clap-as-a-service/${platform}`,
+      url: `https://alexlockhart.ca/clap-as-a-service`,
       _id: userID,
+      action_name: platform,
     }
-  };
+};
 
   request(options, () => {});
 }
