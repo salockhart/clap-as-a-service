@@ -34,14 +34,16 @@ function clapPhrase(phrase, inputEmoji) {
   return clapped.join(' ');
 }
 
-function track(platform) {
+function track(platform, userID) {
   const options = {
-    method: 'POST',
-    uri: 'https://app-analytic.herokuapp.com/track/clap-as-a-service',
-    json: true,
-    body: {
-      platform,
-    },
+    method: 'GET',
+    uri: 'https://matomo-analytics.herokuapp.com',
+    qs: {
+      idsite: 3,
+      rec: 1,
+      url: `https://alexlockhart.ca/clap-as-a-service/${platform}`,
+      _id: userID,
+    }
   };
 
   request(options, () => {});
@@ -83,7 +85,7 @@ app.post('/slack', (req, res) => {
     emoji = match[2];
   }
 
-  track('slack');
+  track('slack', req.body.user_id);
 
   return res.send({
     response_type: 'in_channel',
