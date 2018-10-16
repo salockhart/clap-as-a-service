@@ -2,6 +2,6 @@
 
 $(function () {
     $('#email .btn').click(function () {
-        window.open('mailto:clap.as.a.service@gmail.com', '_self');
+        window.open('mailto:clap@alexlockhart.ca', '_self');
     });
 });
