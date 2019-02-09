@@ -34,29 +34,12 @@ function clapPhrase(phrase, inputEmoji) {
   return clapped.join(' ');
 }
 
-function track(platform, userID) {
-  const options = {
-    method: 'GET',
-    uri: 'https://matomo-analytics.herokuapp.com/piwik.php',
-    qs: {
-      idsite: 3,
-      rec: 1,
-      url: `https://alexlockhart.ca/clap-as-a-service`,
-      _id: userID,
-      action_name: platform,
-    }
-};
-
-  request(options, () => {});
-}
-
 app.get('/clap', (req, res) => {
   const phrase = req.query.phrase;
   const emoji = req.query.emoji;
   if (!phrase) {
     return res.status(400).send('Bad Request phrase URL query required');
   }
-  track('web');
   return res.send(clapPhrase(phrase, emoji));
 });
 
@@ -85,8 +68,6 @@ app.post('/slack', (req, res) => {
     phrase = match[1];
     emoji = match[2];
   }
-
-  track('slack', req.body.user_id);
 
   return res.send({
     response_type: 'in_channel',
