@@ -2,12 +2,17 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const request = require('request');
+const logger = require('morgan');
+const fathom = require('express-fathom');
 
 const app = express();
 
 const port = (process.env.PORT || 3000);
 app.set('port', port);
 
+if (process.env['NODE_ENV'] !== 'production') {
+  app.use(logger('dev'));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -21,6 +26,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, '/docs')));
+
+app.use(fathom({ server: process.env.FATHOM_SERVER, siteID: process.env.FATHOM_SITE }));
 
 function clapPhrase(phrase, inputEmoji) {
   const emoji = inputEmoji || '👏';

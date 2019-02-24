@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "./dev.sh"
+    "start:watch": "nodemon npm start"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
-    "express": "~4.15.2",
+    "express": "^4.16.4",
+    "express-fathom": "^1.0.0",
+    "morgan": "^1.9.1",
     "request": "^2.81.0"
   },
   "devDependencies": {
