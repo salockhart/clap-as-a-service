@@ -16,10 +16,10 @@ jobs:
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       with:
-        args: container:push -a clap-as-a-service web
+        args: container:push -a ${{ secrets.HEROKU_APP_NAME }} web
     - name: release
       uses: actions/heroku@master
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       with:
-        args: container:release -a clap-as-a-service web
+        args: container:release -a ${{ secrets.HEROKU_APP_NAME }} web
