@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  web:
+    build: .
+    image: salockhart/clap-as-a-service
+    command: npm run start:watch
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8080:8080"
