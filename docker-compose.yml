@@ -1,6 +1,9 @@
-version: '3.7'
+version: "3.7"
 services:
   web:
+    environment:
+      - CLIENT_ID
+      - CLIENT_SECRET
     build: .
     image: salockhart/clap-as-a-service
     command: npm run start:watch
